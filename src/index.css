@@ -1,0 +1,188 @@
+:root {
+  --color-primary: #1a1f5e;
+  --color-primary-light: #283082;
+  --color-white: #ffffff;
+  --color-gray-light: #f4f5f7;
+  --color-gray-medium: #e0e0e0;
+  --color-text-dark: #111827;
+  --color-text-muted: #6b7280;
+  --color-orange: #f97316;
+  --color-teal: #14b8a6;
+  
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+  
+  --shadow-sm: 0 2px 4px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 8px 16px -4px rgb(0 0 0 / 0.1), 0 4px 8px -4px rgb(0 0 0 / 0.06);
+  --shadow-lg: 0 20px 40px -8px rgb(0 0 0 / 0.15), 0 10px 15px -8px rgb(0 0 0 / 0.1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f8fafc;
+  color: var(--color-text-dark);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+/* Utilities */
+.container {
+  width: 100%;
+  max-width: 480px; /* Mobile-first width focus, but allows expanding */
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1024px;
+  }
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  border-radius: var(--radius-full);
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.15s ease-out;
+  border: none;
+  gap: 8px;
+  position: relative;
+  letter-spacing: 0.5px;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  box-shadow: 0 5px 0 #11153b, 0 10px 20px rgba(26, 31, 94, 0.3);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-light);
+  transform: translateY(1px);
+  box-shadow: 0 4px 0 #11153b, 0 8px 15px rgba(26, 31, 94, 0.3);
+}
+
+.btn-primary:active {
+  transform: translateY(5px);
+  box-shadow: 0 0px 0 #11153b, 0 2px 5px rgba(26, 31, 94, 0.3);
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+}
+
+.btn-outline:hover {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+.btn-white {
+  background-color: var(--color-white);
+  color: var(--color-primary);
+  box-shadow: 0 5px 0 #d1d5db, 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.btn-white:hover {
+  background-color: #f8fafc;
+  transform: translateY(1px);
+  box-shadow: 0 4px 0 #d1d5db, 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.btn-white:active {
+  transform: translateY(5px);
+  box-shadow: 0 0px 0 #d1d5db, 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.text-center { text-align: center; }
+.mt-1 { margin-top: 4px; }
+.mt-2 { margin-top: 8px; }
+.mt-3 { margin-top: 12px; }
+.mt-4 { margin-top: 16px; }
+.mt-5 { margin-top: 24px; }
+.mt-6 { margin-top: 32px; }
+.mt-8 { margin-top: 48px; }
+
+.mb-1 { margin-bottom: 4px; }
+.mb-2 { margin-bottom: 8px; }
+.mb-4 { margin-bottom: 16px; }
+.mb-6 { margin-bottom: 32px; }
+.mb-8 { margin-bottom: 48px; }
+
+/* Card & Surface Utilities */
+.surface-card {
+  background: linear-gradient(145deg, #ffffff, #f3f4f6);
+  border-radius: var(--radius-lg);
+  padding: 30px 24px;
+  box-shadow: -10px -10px 20px rgba(255, 255, 255, 0.8), 
+              10px 10px 20px rgba(0, 0, 0, 0.04),
+              inset 2px 2px 5px rgba(255, 255, 255, 1);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* Global Form Elements */
+.global-input, .global-select, .global-textarea {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  background-color: #e2e8f0;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: var(--color-text-dark);
+  transition: all 0.2s;
+  box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.08), 
+              inset -3px -3px 6px rgba(255, 255, 255, 0.9);
+}
+
+.global-input.error, .global-select.error, .global-textarea.error {
+  border-color: #ef4444;
+  background-color: #fef2f2;
+}
+
+.global-input:focus, .global-select:focus, .global-textarea:focus {
+  outline: none;
+  background-color: #f8fafc;
+  box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.05), 
+              inset -1px -1px 2px rgba(255, 255, 255, 0.5),
+              0 0 0 3px rgba(26, 31, 94, 0.15);
+}
+
+.global-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-text-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
