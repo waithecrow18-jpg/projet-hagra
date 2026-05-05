@@ -16,7 +16,6 @@ const OtpVerification = () => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [timer, setTimer] = useState(60);
-  const [otpMeta, setOtpMeta] = useState(location.state?.otpMeta || null);
   const canResend = timer === 0;
   const inputRefs = useRef([]);
 
@@ -110,7 +109,6 @@ const OtpVerification = () => {
       return;
     }
 
-    setOtpMeta(result.otpMeta || null);
   };
 
   if (!email) {
@@ -175,47 +173,6 @@ const OtpVerification = () => {
             >
               {email}
             </p>
-
-            {otpMeta?.devOtp && (
-              <div
-                style={{
-                  marginBottom: 20,
-                  borderRadius: 16,
-                  padding: '16px 18px',
-                  background: 'linear-gradient(135deg, #fff7ed, #fffbeb)',
-                  border: '1px solid #fdba74',
-                  textAlign: 'left',
-                  boxShadow: '0 8px 24px rgba(251, 146, 60, 0.12)',
-                }}
-              >
-                <p style={{ margin: 0, color: '#9a3412', fontSize: '0.85rem', fontWeight: 800 }}>
-                  Mode local OTP
-                </p>
-                <p style={{ margin: '8px 0 12px', color: '#7c2d12', fontSize: '0.9rem', lineHeight: 1.5 }}>
-                  Gmail bloque encore l&apos;envoi reel. Utilisez ce code pour continuer vos tests locaux.
-                </p>
-                <div
-                  style={{
-                    borderRadius: 12,
-                    background: '#fff',
-                    border: '1px solid #fed7aa',
-                    padding: '12px 14px',
-                    fontSize: '1.6rem',
-                    fontWeight: 900,
-                    letterSpacing: '0.35rem',
-                    color: '#1a1f5e',
-                    textAlign: 'center',
-                  }}
-                >
-                  {otpMeta.devOtp}
-                </div>
-                {otpMeta.warning && (
-                  <p style={{ margin: '12px 0 0', color: '#9a3412', fontSize: '0.8rem', lineHeight: 1.5 }}>
-                    {otpMeta.warning}
-                  </p>
-                )}
-              </div>
-            )}
 
             {error && <div className={styles.errorAlert}>{error}</div>}
 

@@ -38,7 +38,9 @@ const Register = () => {
     const result = await register({ name: form.name, email: form.email, cne: form.cne, password: form.password });
     if (result.success) {
       // Redirect to OTP verification page
-      navigate('/verify-otp', { state: { email: form.email, name: form.name, otpMeta: result.otpMeta || null } });
+      navigate('/verify-otp', { state: { email: form.email, name: form.name } });
+    } else if (result.error?.includes('existe')) {
+      navigate('/login', { state: { email: form.email, fromRegister: true } });
     } else {
       setError(result.error);
     }

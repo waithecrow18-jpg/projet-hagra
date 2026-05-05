@@ -54,11 +54,27 @@ const SEED_USERS = [
   },
 ];
 
-const API_URL = 'http://localhost:3001';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
 const getStoredSession = () => {
   const session = localStorage.getItem('session');
   return session ? JSON.parse(session) : null;
+};
+
+const normalizeApiError = (error) => {
+  if (!error) {
+    return 'Une erreur est survenue.';
+  }
+
+  if (
+    error.includes('Configuration SMTP') ||
+    error.includes('Connexion Gmail refusee') ||
+    error.includes("mot de passe d'application")
+  ) {
+    return "Le service email est indisponible pour le moment. Veuillez contacter l'administrateur.";
+  }
+
+  return error;
 };
 
 export const AuthProvider = ({ children }) => {
@@ -84,41 +100,6 @@ export const AuthProvider = ({ children }) => {
 
   const getUsers = () => JSON.parse(localStorage.getItem('users') || '[]');
   const saveUsers = (users) => localStorage.setItem('users', JSON.stringify(users));
-
-  const showOtpDeliveryInfo = (result, label) => {
-    if (result.previewUrl) {
-      console.log(`%c${label}`, 'background: #222; color: #bada55; font-size: 16px; padding: 4px;');
-      console.log(`%cCliquez ici pour lire l'email : ${result.previewUrl}`, 'font-size: 14px; font-weight: bold; color: #3b82f6;');
-      alert("Un email OTP de test a ete genere. Regardez la console du navigateur (F12) pour ouvrir le lien.");
-      return;
-    }
-
-    if (result.devOtp) {
-      console.log(`%c${label}`, 'background: #1f2937; color: #fbbf24; font-size: 16px; padding: 4px;');
-      console.log(`%cCode OTP local : ${result.devOtp}`, 'font-size: 16px; font-weight: bold; color: #10b981;');
-      if (result.warning) {
-        console.warn(result.warning);
-      }
-      alert(`Mode local OTP\n\nCode: ${result.devOtp}\n\n${result.warning || "Le serveur email est en mode local."}`);
-    }
-  };
-
-  const getOtpMeta = (result) => {
-    if (!result) {
-      return null;
-    }
-
-    if (!result.devOtp && !result.previewUrl && !result.warning) {
-      return null;
-    }
-
-    return {
-      devOtp: result.devOtp || '',
-      previewUrl: result.previewUrl || '',
-      warning: result.warning || '',
-      deliveryMode: result.deliveryMode || (result.previewUrl ? 'preview' : 'email'),
-    };
-  };
 
   const getSiteStatus = () => localStorage.getItem('siteStatus') || 'open';
 
@@ -176,12 +157,11 @@ export const AuthProvider = ({ children }) => {
       const result = await res.json();
 
       if (!res.ok) {
-        return { success: false, error: result.error || "Impossible d'envoyer le code OTP." };
+        return { success: false, error: normalizeApiError(result.error) || "Impossible d'envoyer le code OTP." };
       }
 
-      showOtpDeliveryInfo(result, 'OTP inscription genere');
       saveUsers([...users, newUser]);
-      return { success: true, user: newUser, otpMeta: getOtpMeta(result) };
+      return { success: true, user: newUser };
     } catch (err) {
       console.error('OTP send error:', err);
       return { success: false, error: 'Erreur de connexion au serveur OTP.' };
@@ -232,11 +212,10 @@ export const AuthProvider = ({ children }) => {
       const result = await res.json();
 
       if (!res.ok) {
-        return { success: false, error: result.error };
+        return { success: false, error: normalizeApiError(result.error) };
       }
 
-      showOtpDeliveryInfo(result, 'OTP renvoye');
-      return { success: true, otpMeta: getOtpMeta(result) };
+      return { success: true };
     } catch {
       return { success: false, error: 'Erreur de connexion au serveur.' };
     }
